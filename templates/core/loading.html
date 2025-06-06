@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Loading...</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg-color);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: rgb(0, 0, 0);
+  }
+
+  .logo {
+    width: 200px;
+  
+    animation: flash 1s infinite;
+  }
+
+  @keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .tagline {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.5rem;
+    margin-top: 30px;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeUp 1.8s ease-out forwards;
+    color: #222; /* contrast against cream */
+    letter-spacing: 3px;
+    font-weight: 300;
+    text-align: center;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+  .progress-bar {
+  width: 300px;
+  height: 4px; /* Very thin bar */
+  background: #e0e0e0;
+  border-radius: 100px;
+  overflow: hidden;
+  margin-top: 25px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background-color: black; /* macOS-like black bar */
+  border-radius: 100px;
+  transition: width 0.3s ease-in-out;
+  background-image: linear-gradient(to right, #111, #000, #111);
+background-size: 200% 100%;
+animation: shimmer 2s linear infinite;
+}
+
+  #percentText {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: #444;
+    font-family: 'Inter', sans-serif;
+  }
+
+  #exploreBtn {
+    display: none;
+    margin-top: 20px;
+    padding: 10px 24px;
+    background: #222;
+    color: white;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  }
+
+  #exploreBtn:hover {
+    background: #444;
+  }
+</style>
+</head>
+<body>
+
+<img src="/media/logo.jpg" alt="Logo" class="logo">
+<div class="tagline">YOUR STORY THROUGH OUR LENS</div>
+
+<div class="progress-bar">
+  <div class="progress-bar-fill" id="progressBar"></div>
+</div>
+<p id="percentText">0%</p>
+<button id="exploreBtn" onclick="goToHome()">Skadoosh</button>
+
+<script>
+  const imageUrls = [
+    {% for url in image_urls %}
+      "{{ url }}",
+    {% endfor %}
+  ];
+
+  let loaded = 0;
+  const total = imageUrls.length;
+  const progressBar = document.getElementById('progressBar');
+  const percentText = document.getElementById('percentText');
+  const exploreBtn = document.getElementById('exploreBtn');
+
+  function updateProgress() {
+    const percent = Math.round((loaded / total) * 100);
+    progressBar.style.width = percent + '%';
+    percentText.textContent = percent + '%';
+    if (loaded === total) {
+      exploreBtn.style.display = 'inline-block';
+    }
+  }
+
+  function preloadImage(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = img.onerror = () => {
+        loaded++;
+        updateProgress();
+        resolve();
+      };
+    });
+  }
+
+  async function preloadAll() {
+    for (const url of imageUrls) {
+      await preloadImage(url);
+    }
+  }
+
+  function goToHome() {
+    window.location.href = "{% url 'home' %}";
+  }
+
+  preloadAll();
+</script>
+
+</body>
+</html>

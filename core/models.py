@@ -24,8 +24,11 @@ class Photo(models.Model):
 class QuoteRequest(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    project_type = models.CharField(max_length=100, blank=True, default='')
     message = models.TextField()
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Quote from {self.name}"
+        return self.name
+

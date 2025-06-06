@@ -20,5 +20,7 @@ class PhotoAdmin(admin.ModelAdmin):
             'description': 'For best display in the Latest Works section, featured photos should ideally have a 16:9 aspect ratio.'
         })
     )
-
-admin.site.register(QuoteRequest)
+@admin.register(QuoteRequest)
+class QuoteRequestAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'project_type', 'submitted_at')
+    search_fields = ('name', 'email', 'project_type')

@@ -15,6 +15,11 @@
         background: var(--bg-color);
         line-height: 1.6;
         scroll-behavior: smooth;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     /* Fullscreen hero section */
@@ -22,54 +27,81 @@
         height: 100vh;
         display: flex;
         align-items: center;
-        justify-content: center;
-        position: relative;
-        padding: 0;
+        justify-content: space-between;
+        padding: 0 4rem;
+        gap: 1.5rem;
+        flex-shrink: 0;
     }
 
     .hero-content {
-        text-align: center;
-        max-width: 800px;
-        padding: 2rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-text {
+        text-align: left;
+        max-width: 600px;
     }
 
     .hero-text h1 {
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: 300;
         text-transform: uppercase;
-        letter-spacing: 4px;
-        margin-bottom: 2rem;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
         opacity: 0;
         transform: translateY(20px);
         animation: fadeInUp 1s ease forwards;
     }
 
     .hero-text p {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
         font-size: 1.2rem;
+        line-height: 1.8;
         opacity: 0;
-        transform: translateY(20px);
         animation: fadeInUp 1s ease forwards 0.3s;
     }
 
-    .scroll-indicator {
-        position: absolute;
-        bottom: 2rem;
-        left: 50%;
-        transform: translateX(-50%);
-        cursor: pointer;
+    /* New slide down message */
+    .slide-down-message {
+        max-width: 600px;
+        margin-top: 2rem;
+        font-size: 1.4rem;
+        font-weight: 300;
+        text-align: left;
+        color: var(--accent-color);
+
         opacity: 0;
-        animation: fadeIn 1s ease forwards 1s;
+        transform: translateY(-50px);
+        animation: slideDownFadeIn 1s ease forwards;
+        animation-delay: 1.3s; /* triggers after hero text fade in */
     }
 
-    .scroll-indicator::before {
-        content: '';
-        display: block;
-        width: 20px;
-        height: 20px;
-        border-right: 2px solid var(--text-color);
-        border-bottom: 2px solid var(--text-color);
-        transform: rotate(45deg);
-        animation: bounce 2s infinite;
+    @keyframes slideDownFadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-image {
+        padding-top: 80px;
+        flex: 0 0 50vw; /* Fixed width */
+        max-height: 90vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+        max-height: 90vh;
+        object-fit: cover;
+        object-position: center;
+        border-radius: 1rem;
     }
 
     /* Scroll reveal animations */
@@ -92,30 +124,13 @@
         }
     }
 
-    @keyframes fadeIn {
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-            transform: rotate(45deg) translateY(0);
-        }
-        40% {
-            transform: rotate(45deg) translateY(-10px);
-        }
-        60% {
-            transform: rotate(45deg) translateY(-5px);
-        }
-    }
-
     /* Latest Works section with auto-scroll */
     .latest-works {
         position: relative;
         overflow: hidden;
         padding: 2rem 0;
         background: var(--bg-color);
+        flex-shrink: 0;
     }
 
     .latest-works-scroll {
@@ -154,63 +169,6 @@
     }
 
     /* Other sections styles */
-    .hero-section {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 4rem;
-    gap: 2rem;
-}
-
-.hero-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.hero-text {
-    text-align: left;
-    max-width: 600px;
-}
-
-.hero-text h1 {
-    font-size: 3rem;
-    font-weight: 300;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeInUp 1s ease forwards;
-}
-
-.hero-text p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    opacity: 0;
-    animation: fadeInUp 1s ease forwards 0.3s;
-}
-
-.hero-image {
-    padding-top: 80px;
-    flex: 0 0 40vw; /* Fixed width (can be 35vw or 50vw depending on preference) */
-    max-height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.hero-image img {
-    width: 100%;
-    height: auto;
-    max-height: 90vh;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 1rem;
-}
     .section-title {
         font-size: 1.5rem;
         font-weight: 300;
@@ -221,26 +179,124 @@
     }
 
     .about-section, .contact-section {
-        padding: 4rem;
+        padding: 2rem 1rem; /* Added sufficient padding */
         text-align: center;
+        flex-shrink: 0;
+        background: var(--bg-color);
+    }
+
+    .social-links {
+        margin-top: 1rem;
+    }
+
+    .social-links a {
+        display: inline-block;
+        margin: 0 1rem;
+        font-size: 1.4rem;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        vertical-align: middle;
+    }
+
+    .social-links a:hover {
+        color: var(--accent-color);
+    }
+
+    .social-links i {
+        margin-right: 0.5rem;
+        font-size: 1.4rem;
+        vertical-align: middle;
+    }
+
+    /* Footer copyright */
+    footer {
+        text-align: center;
+        padding: 1rem 0;
+        font-size: 0.9rem;
+        color: #777;
+        border-top: 1px solid #ddd;
+        margin-top: auto; /* Push footer to bottom */
+        background: var(--bg-color);
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            margin-top: 100px; /* fixed missing semicolon */
+            flex-direction: column;
+            padding: 2rem 1rem;
+            justify-content: center;
+            height: auto;
+        }
+
+        .hero-content {
+            max-width: 100%;
+            text-align: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            letter-spacing: 1.5px;
+        }
+
+        .hero-text p {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+                Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+            font-size: 1.2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards 0.3s;
+        }
+
+        .slide-down-message {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .hero-image {
+            display: none;
+        }
+
+        /* Faster scrolling for smaller screens */
+        .latest-works-scroll {
+            animation-duration: 8s; /* scroll twice as fast */
+        }
+
+        /* Responsive featured photos */
+        .featured-photo {
+            width: 80vw; /* width relative to viewport width */
+            height: auto; /* maintain aspect ratio */
+            max-height: 45vh; /* limit max height */
+        }
+
+        .featured-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    @media (max-width: 375px) {
+        .hero-text h1 {
+            font-size: 1.8rem;
+            letter-spacing: 1.5px;
+        }
+       
+    .contact-section {
+        padding: 0.5rem 0.5rem;  /* reduce padding */
+        font-size: 0.9rem;       /* smaller font size */
+        text-align: center;      /* keep centered */
     }
     .social-links a {
-    display: inline-block;
-    margin: 0 1rem;
-    font-size: 1.2rem;
-    color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.3s ease;
+        font-size: 1.1rem;       /* slightly smaller links text */
+        margin: 0 0.5rem;        /* reduce horizontal margin */
+    }
+    .social-links i {
+        font-size: 1.1rem;       /* reduce icon size */
+        margin-right: 0.3rem;    /* smaller gap */
+    }
 }
-
-.social-links a:hover {
-    color: var(--accent-color);
-}
-
-.social-links i {
-    margin-right: 0.5rem;
-}
-
+    
 </style>
 
 <section class="hero-section">
@@ -259,10 +315,8 @@
     </div>
 </section>
 
-
-
 <!-- Latest Works Section -->
-<section class="latest-works reveal">
+<section class="latest-works reveal" id="latest-works">
     <h2 class="section-title">Latest Works</h2>
     <div class="latest-works-scroll">
         {% for photo in photos %}
@@ -283,17 +337,25 @@
     </div>
 </section>
 
-
 <!-- Contact Section -->
 <section class="contact-section reveal">
     <h2 class="section-title">Contact Us</h2>
     <div class="social-links">
-        <a href="#" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
-        <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
-        <a href="mailto:someone@example.com"><i class="fas fa-envelope"></i> Email</a>
+        <a href="https://www.instagram.com/kreative_circle/" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+        <a href="https://wa.me/919612455862?text=hi" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+        </a>
+        <a href="mailto:someone@example.com">
+            <i class="fas fa-envelope"></i> Email
+        </a>
     </div>
 </section>
 
+<footer>
+    &copy; {{ now|date:"Y" }} Kreative Circle
+</footer>
 
 <script>
     // Scroll reveal functionality
@@ -313,5 +375,13 @@
 
     window.addEventListener('scroll', reveal);
     reveal(); // Initial check
+
+    // Auto scroll down after 5 seconds to "Latest Works"
+    setTimeout(() => {
+        const latestWorksSection = document.getElementById('latest-works');
+        if (latestWorksSection) {
+            latestWorksSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 5000);
 </script>
 {% endblock %}

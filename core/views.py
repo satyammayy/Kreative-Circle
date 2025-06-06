@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import Photo, Category
+from .forms import QuoteRequestForm
+from django.shortcuts import render, redirect
 
 def home(request):
     featured_photos = Photo.objects.filter(is_featured=True).order_by('-uploaded_at')[:5]
@@ -35,7 +37,21 @@ def get_quote(request):
         form = QuoteRequestForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('success_page')  # redirect after successful save
     else:
         form = QuoteRequestForm()
+
     return render(request, 'core/get_quote.html', {'form': form})
+
+# Add to your imports
+from django.shortcuts import render
+
+def loading(request):
+    photos = Photo.objects.all()
+    image_urls = [photo.image.url for photo in photos]
+    return render(request, 'core/loading.html', {'image_urls': image_urls})
+
+def quote_thanks(request):
+    return render(request, 'core/quote_thanks.html')
+
+    

@@ -1,5 +1,112 @@
 {% extends 'core/base.html' %}
 {% block content %}
-<h2>About Us</h2>
-<p>Kreative Circle is a team of passionate photographers capturing memories professionally and artistically.</p>
+{% load static %}
+
+<style>
+    .about-container {
+        padding: 5rem 1rem 3rem;  /* Added top padding to avoid navbar overlap */
+        max-width: 900px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .about-container h2 {
+        font-size: 2rem;
+        font-weight: 300;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 1.5rem;
+    }
+
+    .about-container p {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        font-weight: 300;
+        color: #333;
+    }
+
+    .portrait-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin-top: 2.5rem;
+    }
+
+    .portrait {
+        width: 280px;
+        text-align: center;
+    }
+
+    .portrait img {
+        width: 100%;
+        height: 280px;
+        border-radius: 1rem;
+        object-fit: cover;
+        object-position: center;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .portrait h4 {
+        margin-top: 0.8rem;
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    /* iPhone 12 / XR / SE & small devices */
+    @media (max-width: 430px) {
+        .about-container {
+            padding: 6rem 1rem 3rem;  /* Adjusted for small screens too */
+        }
+
+        .about-container h2 {
+            font-size: 1.6rem;
+        }
+
+        .about-container p {
+            font-size: 1rem;
+        }
+
+        .portrait-section {
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .portrait {
+            width: 200px;
+        }
+
+        .portrait img {
+            height: 200px;
+        }
+
+        .portrait h4 {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+<div class="about-container">
+    <h2>About Us</h2>
+    <p>
+        Welcome to <strong>Kreative Circle</strong>, where artistry meets every angle! We're <strong>Jeveet</strong> and <strong>Silheiba</strong>, 
+        the lens-wielding duo behind the magic. Whether it's the heartfelt vows of a wedding, the cutting-edge style of a fashion shoot, 
+        or capturing the essence of your unique story, we're here to deliver vibrant, unforgettable imagery. We love what we do, 
+        and it shows in every frame. Let's create something beautiful together.
+    </p>
+
+    <div class="portrait-section">
+        <div class="portrait">
+            <img src="/media/silheiba.png" alt="Silheiba">
+            <h4>Silheiba</h4>
+        </div>
+        <div class="portrait">
+            <img src="/media/jeveet.png" alt="Jeveet">
+            <h4>Jeveet</h4>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}
