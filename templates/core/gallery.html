@@ -44,50 +44,57 @@
     
     .gallery-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+        grid-auto-rows: 250px;
     }
     
     .gallery-card {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid var(--primary-color);
+        position: relative;
         border-radius: 15px;
         overflow: hidden;
         transition: all 0.3s ease;
+        grid-row: span 1;
+        cursor: pointer;
     }
-    
-    .gallery-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 0 20px var(--primary-color);
+
+    .gallery-card.portrait {
+        grid-row: span 2;
     }
     
     .gallery-card img {
         width: 100%;
-        aspect-ratio: 16/9;
+        height: 100%;
         object-fit: cover;
-        transition: all 0.3s ease;
+        transition: transform 0.3s ease;
     }
     
     .gallery-card:hover img {
         transform: scale(1.05);
     }
-    
-    .gallery-card .card-body {
-        padding: 1.5rem;
-    }
-    
-    .card-title {
-        color: var(--text-color);
-        font-size: 1.2rem;
-        margin: 0;
-        text-align: center;
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        z-index: 1000;
+        cursor: zoom-out;
     }
 
-    .card-category {
-        color: var(--primary-color);
-        font-size: 0.9rem;
-        text-align: center;
-        margin-top: 0.5rem;
+    .modal img {
+        max-width: 90%;
+        max-height: 90vh;
+        margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        object-fit: contain;
     }
 </style>
 
@@ -108,18 +115,17 @@
 
     <div class="gallery-grid">
         {% for photo in photos %}
-        <div class="gallery-card">
-            <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ photo.title }}</h5>
-                {% if photo.category %}
-                <p class="card-category">{{ photo.category.name }}</p>
-                {% endif %}
-            </div>
+        <div class="gallery-card" data-src="{{ photo.image.url }}">
+            <img src="{{ photo.image.url }}" alt="{{ photo.title }}" onload="checkAspectRatio(this)">
         </div>
         {% endfor %}
     </div>
 </section>
+
+<!-- Modal for image zoom -->
+<div class="modal" id="imageModal" onclick="closeModal()">
+    <img id="modalImage" src="" alt="Zoomed image">
+</div>
 
 <script>
     // Scroll reveal functionality
@@ -136,6 +142,33 @@
             }
         });
     }
+
+    // Check image aspect ratio and adjust layout
+    function checkAspectRatio(img) {
+        if (img.naturalHeight > img.naturalWidth) {
+            img.parentElement.classList.add('portrait');
+        }
+    }
+
+    // Modal functionality
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+
+    document.querySelectorAll('.gallery-card').forEach(card => {
+        card.addEventListener('click', function() {
+            modal.style.display = 'block';
+            modalImg.src = this.dataset.src;
+        });
+    });
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
 
     window.addEventListener('scroll', reveal);
     reveal(); // Initial check
